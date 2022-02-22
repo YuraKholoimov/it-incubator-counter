@@ -1,0 +1,22 @@
+.counterInput input {
+    height: 180px;
+    width: 410px;
+    text-align: center;
+    border: 3px solid #06b9c9;
+    border-radius: 10px;
+    background-color: #1d253a;
+    margin: 10px;
+}
+
+input {
+    color: #06b9c9;
+    font-size: 28px;
+}
+
+.inputText {
+    color: red;
+    font-size: 64px;
+    font-weight: 800;
+}
+
+

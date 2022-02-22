@@ -1,0 +1,17 @@
+.titleSetInput {
+    margin: 10px;
+}
+
+input {
+    height: 30px;
+    width: 150px;
+    text-align: center;
+    font-size: 28px;
+}
+
+.inputContainer {
+    width: 400px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}

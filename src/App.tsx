@@ -13,7 +13,6 @@ export default function App() {
     let [counter, setCounter] = useState<CounterType>({
         min: 0, max: 5, status: ""
     })
-    console.log(counter)
 
     const incHandler = () => {
         if (counter.min < counter.max) {
@@ -21,22 +20,21 @@ export default function App() {
         }
     };
 
-    const resetHandler = () => setCounter({...counter, min: 0, max: 5})
-
     const setValue = (min: number, max:number) => {
         setCounter({...counter, min, max, status: ""})
     }
+    const resetHandler = () => setCounter({...counter, min: 0, max: 5})
 
-    const showStatus = (status:string) => {
-        setCounter({...counter,status})
-    }
+    const showStatus = (status:string) => setCounter({...counter,status})
+
+    let isMaxValue = counter.min == counter.max || counter.status  == "Error"
 
     return (
         <div className={"App"}>
             <Counter
-                status={counter.status}
                 value={counter.min}
-                maxValue={counter.max}
+                isMaxValue={isMaxValue}
+                status={counter.status}
                 incHandler={incHandler}
                 resetHandler={resetHandler}
             />

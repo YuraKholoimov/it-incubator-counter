@@ -1,7 +1,16 @@
 import React, {useEffect, useState} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
 import './App.css';
 import {Counter} from "./Components/Counter/Counter";
-import SetCounter from "./Components/Counter/SetCounter";
+import {AppStateType} from "./Components/store/store";
+import {
+    changeValueTC,
+    getValueFromLocalStorageTC,
+    initialStateType,
+    ResetValueAC
+} from "./Components/store/counter-reduser";
+import {SetCounter} from "./Components/Counter/SetCounter";
+import {log} from "util";
 
 export type CounterType = {
     min: number
@@ -9,57 +18,52 @@ export type CounterType = {
     status: string
 }
 
+//--------- APP
 export default function App() {
-    let [counter, setCounter] = useState<CounterType>({
-        min: 0, max: 5, status: ""
-    })
+    const {min, max, status} = useSelector<AppStateType, initialStateType>(state => state.counterValue)
+    const dispatch = useDispatch()
 
     useEffect(() => {
-        let storage = localStorage.getItem("counterValue")
-            let {min, max} = storage &&JSON.parse(storage)
-            setCounter({...counter, min, max})
+        let storage = localStorage.getItem("counter-value")
+        let value = storage && JSON.parse(storage)
+        dispatch(getValueFromLocalStorageTC(value))
     }, [])
 
-    const getLocalStorageValue = () => {
-        let valet = localStorage.getItem("counterValue")
-        let {min, max} = valet && JSON.parse(valet)
-        setCounter({...counter, min, max})
-    }
-
     const incHandler = () => {
-        if (counter.min < counter.max) {
-            setCounter({...counter, min: ++counter.min})
-        }
-    };
-
-    const setValue = (min: number, max: number) => {
-        localStorage.setItem("counterValue", JSON.stringify({min, max}))
-        setCounter({...counter, min, max, status: ""})
-    }
-    const resetHandler = () => {
-        setCounter({...counter, min: 0, max: 5})
-        localStorage.clear()
+        min < max && dispatch(changeValueTC())
     }
 
-    const showStatus = (status: string) => setCounter({...counter, status})
+    const resetValueHandler = () => {
+        dispatch(ResetValueAC())
+    }
 
-    let isMaxValue = counter.min == counter.max || counter.status == "Error"
+    let isMaxValue = min == max || status == "Error"
 
     return (
         <div className={"App"}>
             <Counter
-                value={counter.min}
+                value={min}
                 isMaxValue={isMaxValue}
-                status={counter.status}
+                status={status}
                 incHandler={incHandler}
-                resetHandler={resetHandler}
+                resetValueHandler={resetValueHandler}
             />
-            <SetCounter
-                counter={counter}
-                setValue={setValue}
-                showStatus={showStatus}
-                getLocalStorageValue={getLocalStorageValue}
-            />
+            <SetCounter />
         </div>
     );
 };
+
+
+// const getLocalStorageValue = () => {
+//     let valet = localStorage.getItem("counterValue")
+//     let {min, max} = valet && JSON.parse(valet)
+//     setCounter({...counter, min, max})
+// }
+
+//
+// const setValue = (min: number, max: number) => {
+//     localStorage.setItem("counterValue", JSON.stringify({min, max}))
+//     setCounter({...counter, min, max, status: ""})
+// }
+
+// const showStatus = (status: string) => setCounter({...counter, status})

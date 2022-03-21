@@ -7,8 +7,8 @@ import s from "./counter.module.css"
 export type CounterType = {
     value: number
     status: string
-    incHandler: () => void
-    resetHandler: (min?: number) => void
+    incHandler: (el?:any) => void
+    resetValueHandler: (el?: any) => void
     isMaxValue: boolean
 }
 
@@ -16,12 +16,16 @@ export const Counter: React.FC<CounterType> = (props) => {
     return (
         <div className={s.containerCounter}>
             <div>
+
+                {/*---------- INPUT ---------*/}
                 <InputCounter
                     counter={props.value}
                     status={props.status}
                     isMaxValue={props.isMaxValue}
                 />
             </div>
+
+            {/*--------BUTTONS-------*/}
             <div className={s.counterButtons}>
                 <MyButton
                     callback={props.incHandler}
@@ -29,7 +33,7 @@ export const Counter: React.FC<CounterType> = (props) => {
                     disabled={props.isMaxValue || !!props.status}
                 />
                 <MyButton
-                    callback={props.resetHandler}
+                    callback={props.resetValueHandler}
                     children={'reset'}
                     disabled={!!props.status}
                 />

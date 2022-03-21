@@ -3,11 +3,9 @@ import s from "./inputSetValue.module.css"
 
 export type InputSetValueType = {
     title: string
-    value: number
-    id: string
+    value?: number
     className: string
-    changeMinValue: (e: React.ChangeEvent<HTMLInputElement>) => void
-    changeMaxValue: (e: React.ChangeEvent<HTMLInputElement>) => void
+    onChangeHandler?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 export default function InputSetValue(props: InputSetValueType) {
@@ -15,12 +13,13 @@ export default function InputSetValue(props: InputSetValueType) {
         <div className={s.inputContainer}>
             <div className={s.titleSetInput}>{`${props.title}:`}</div>
             <div>
+
                 <input
-                    key={props.id}
                     type="number"
-                    onChange={props.changeMinValue}
+                    onChange={props.onChangeHandler}
                     {...props}
                 />
+
             </div>
         </div>
     )

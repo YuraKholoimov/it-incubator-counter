@@ -3,7 +3,7 @@ import s from "./buttons.module.css"
 
 export type MyButtonType = {
     children:string
-    callback:()=>void
+    callback?:()=>void
     disabled?:boolean
 }
 

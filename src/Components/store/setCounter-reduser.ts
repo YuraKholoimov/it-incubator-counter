@@ -5,6 +5,8 @@ export type ActionTypes = ReturnType<typeof ChangeMinValueAC>
     | ReturnType<typeof ChangeMaxValueAC>
     | ReturnType<typeof ResetValueAC>
     | ReturnType<typeof SetValueAC>
+    | ReturnType<typeof setErrorAC>
+    | ReturnType<typeof SetValueFromLocalStorageAC>
 
 
 //-------- INITIAL STATE
@@ -20,7 +22,10 @@ export const ResetValueAC = () => ({
     type: "RESET-VALUE"} as const)
 export const SetValueAC = (min: number, max: number) => ({
     type: "SET-VALUE", min, max} as const)
-
+export const SetValueFromLocalStorageAC = (min: number, max: number) => ({
+    type: "SET-VALUE-FROM-LOCALSTORAGE", min, max} as const)
+export const setErrorAC = (error: string) => ({
+    type: "SET-ERROR", error} as const)
 
 //--------- REDUCER of COUNTER VALUE
 export const setCounterReducer = (
@@ -36,18 +41,22 @@ export const setCounterReducer = (
             return {...state, min: 0, max: 5}
         case "SET-VALUE":
             return {...state, min: action.min, max: action.max}
+        case "SET-VALUE-FROM-LOCALSTORAGE":
+            return {...state, min: action.min, max: action.max}
+        case "SET-ERROR":
+            return {...state, error: action.error}
         default:
             return state
     }
 }
 
 //---------THUNK
-export const setValueSetCounterTC = (min: number, max: number) => (dispatch: Dispatch) => {
-    localStorage.setItem("counter", JSON.stringify({min, max}))
-    dispatch(SetValueAC(min, max))
-}
-export const getValueFromLocalStorageTC = () => (dispatch: Dispatch) => {
-    const response = localStorage.getItem("counter")
-    const {min, max} = response && JSON.parse(response)
-    dispatch(SetValueAC(min, max))
-}
+// export const setValueSetCounterTC = (min: number, max: number) => (dispatch: Dispatch) => {
+//     localStorage.setItem("counter", JSON.stringify({min, max}))
+//     dispatch(SetValueAC(min, max))
+// }
+// export const getValueFromLocalStorageTC = () => (dispatch: Dispatch) => {
+//     const response = localStorage.getItem("counter")
+//     const {min, max} = response && JSON.parse(response)
+//     dispatch(SetValueAC(min, max))
+// }

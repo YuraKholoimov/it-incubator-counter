@@ -7,7 +7,7 @@ import s from "./counter.module.css"
 export type CounterType = {
     value: number
     status: string
-    incHandler: (el?:any) => void
+    incHandler: (el?: any) => void
     resetValueHandler: (el?: any) => void
     isMaxValue: boolean
 }

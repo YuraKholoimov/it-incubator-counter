@@ -1,41 +1,41 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import './App.css';
 import {Counter} from "./Components/Counter/Counter";
 import {AppStateType} from "./Components/store/store";
 import {
-    changeValueTC,
-    getValueFromLocalStorageTC,
+    ChangeValueAC,
     initialStateType,
-    ResetValueAC
+    ResetValueAC,
+    setErrorAC,
+    SetValueAC
 } from "./Components/store/counter-reduser";
 import {SetCounter} from "./Components/Counter/SetCounter";
-import {log} from "util";
+import {
+    getValueFromLocalStorageTC,
+    setValueSetCounterTC
+} from "./Components/store/setCounter-reduser";
 
-export type CounterType = {
-    min: number
-    max: number
-    status: string
-}
 
 //--------- APP
 export default function App() {
-    const {min, max, status} = useSelector<AppStateType, initialStateType>(state => state.counterValue)
     const dispatch = useDispatch()
+    const {min, max, status} = useSelector<AppStateType, initialStateType>(
+        state => state.counterValue)
 
     useEffect(() => {
-        let storage = localStorage.getItem("counter-value")
-        let value = storage && JSON.parse(storage)
-        dispatch(getValueFromLocalStorageTC(value))
+        let storage = localStorage.getItem("counter")
+        let {min, max} = storage && JSON.parse(storage)
+        dispatch(SetValueAC(min, max))
     }, [])
 
-    const incHandler = () => {
-        min < max && dispatch(changeValueTC())
+    const setValue = (min: number, max: number) => {
+        dispatch(setErrorAC(""))
+        dispatch(setValueSetCounterTC(min, max))
     }
-
-    const resetValueHandler = () => {
-        dispatch(ResetValueAC())
-    }
+    const incHandler = () => min < max && dispatch(ChangeValueAC())
+    const resetValueHandler = () => dispatch(ResetValueAC())
+    const getValueFromLocalStorage = () => dispatch(getValueFromLocalStorageTC())
 
     let isMaxValue = min == max || status == "Error"
 
@@ -48,22 +48,11 @@ export default function App() {
                 incHandler={incHandler}
                 resetValueHandler={resetValueHandler}
             />
-            <SetCounter />
+            <SetCounter
+                setValue={setValue}
+                getValueFromLocalStorage={getValueFromLocalStorage}
+                status={status}
+            />
         </div>
     );
 };
-
-
-// const getLocalStorageValue = () => {
-//     let valet = localStorage.getItem("counterValue")
-//     let {min, max} = valet && JSON.parse(valet)
-//     setCounter({...counter, min, max})
-// }
-
-//
-// const setValue = (min: number, max: number) => {
-//     localStorage.setItem("counterValue", JSON.stringify({min, max}))
-//     setCounter({...counter, min, max, status: ""})
-// }
-
-// const showStatus = (status: string) => setCounter({...counter, status})

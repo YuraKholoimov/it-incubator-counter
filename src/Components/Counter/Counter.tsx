@@ -16,16 +16,12 @@ export const Counter: React.FC<CounterType> = (props) => {
     return (
         <div className={s.containerCounter}>
             <div>
-
-                {/*---------- INPUT ---------*/}
                 <InputCounter
                     counter={props.value}
                     status={props.status}
                     isMaxValue={props.isMaxValue}
                 />
             </div>
-
-            {/*--------BUTTONS-------*/}
             <div className={s.counterButtons}>
                 <MyButton
                     callback={props.incHandler}

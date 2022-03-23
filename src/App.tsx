@@ -3,11 +3,11 @@ import {useDispatch, useSelector} from 'react-redux';
 import './App.css';
 import {Counter} from "./Components/Counter/Counter";
 import {AppStateType} from "./Components/store/store";
-import {ChangeValueAC, ResetValueAC, SetValueAC} from "./Components/store/counter-reduser";
+import {ResetValueAC, SetValueAC} from "./Components/store/counter-reduser";
 import {SetCounter} from "./Components/Counter/SetCounter";
 import {
     ChangeMaxValueAC,
-    ChangeMinValueAC,
+    ChangeMinValueAC, ChangeValueAC,
     initialStateSetCounterType,
     setErrorAC
 } from "./Components/store/setCounter-reduser";
@@ -17,7 +17,7 @@ import s from "./Components/Counter/counter.module.css";
 //--------- APP
 export default function App() {
     const dispatch = useDispatch()
-    const {min, max, error} = useSelector<AppStateType, initialStateSetCounterType>(
+    const {min, max, current, error} = useSelector<AppStateType, initialStateSetCounterType>(
         state => state.setCounter)
 
     const setValue = (min: number, max: number) => {
@@ -43,19 +43,21 @@ export default function App() {
     const incHandler = () => min < max && dispatch(ChangeValueAC())
     const resetValueHandler = () => dispatch(ResetValueAC())
 
-    let isMaxValue = min == max || error == "Error"
+    let isMaxValue = current == max || error == "Error"
     const classname = () =>  error === "Error" ? `${s.error}` : ""
 
     return (
         <div className={"App"}>
             <Counter
-                value={min}
+                value={current}
                 isMaxValue={isMaxValue}
                 status={error}
                 incHandler={incHandler}
                 resetValueHandler={resetValueHandler}
             />
             <SetCounter
+                min={min}
+                max={max}
                 classname={classname()}
                 setValue={setValue}
                 status={error}

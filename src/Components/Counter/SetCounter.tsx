@@ -8,6 +8,8 @@ import {AppStateType} from "../store/store";
 import {initialStateType} from "../store/counter-reduser";
 
 export type SetCounterPropsType = {
+    min: number
+    max: number
     status: string
     classname: string
     setValue: (min: number, max: number) => void
@@ -25,13 +27,13 @@ export function SetCounter(props: SetCounterPropsType) {
             <div className={s.counterInput}>
                 <InputSetValue
                     title={"MIN"}
-                    value={min}
+                    value={props.min}
                     onChangeHandler={props.onChangeInputsValue}
                     className={props.classname}
                 />
                 <InputSetValue
                     title={"MAX"}
-                    value={max}
+                    value={props.max}
                     onChangeHandler={props.onChangeInputsValue}
                     className={props.classname}
                 />

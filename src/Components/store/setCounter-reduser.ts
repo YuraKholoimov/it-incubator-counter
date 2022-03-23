@@ -7,11 +7,12 @@ export type ActionTypes = ReturnType<typeof ChangeMinValueAC>
     | ReturnType<typeof SetValueAC>
     | ReturnType<typeof setErrorAC>
     | ReturnType<typeof SetValueFromLocalStorageAC>
+    | ReturnType<typeof ChangeValueAC>
 
 
 //-------- INITIAL STATE
 export type initialStateSetCounterType = typeof initialState
-const initialState = {min: 0, max: 5, error: ""}
+const initialState = {min: 0, max: 5, current: 0, error: ""}
 
 //--------- ACTION CREATORS
 export const ChangeMinValueAC = (value: number) => ({
@@ -26,6 +27,8 @@ export const SetValueFromLocalStorageAC = (min: number, max: number) => ({
     type: "SET-VALUE-FROM-LOCALSTORAGE", min, max} as const)
 export const setErrorAC = (error: string) => ({
     type: "SET-ERROR", error} as const)
+export const ChangeValueAC = () => ({
+    type: "CHANGE-VALUE"} as const)
 
 //--------- REDUCER of COUNTER VALUE
 export const setCounterReducer = (
@@ -38,11 +41,13 @@ export const setCounterReducer = (
         case "CHANGE-MAX-VALUE":
             return {...state, max: action.value}
         case "RESET-VALUE":
-            return {...state, min: 0, max: 5}
+            return {...state, min: 0, max: 5, current: 0}
         case "SET-VALUE":
-            return {...state, min: action.min, max: action.max}
+            return {...state, min: action.min, max: action.max, current: action.min}
         case "SET-VALUE-FROM-LOCALSTORAGE":
-            return {...state, min: action.min, max: action.max}
+            return {...state, min: action.min, max: action.max, current: action.min}
+        case "CHANGE-VALUE":
+            return {...state, current: ++state.current}
         case "SET-ERROR":
             return {...state, error: action.error}
         default:

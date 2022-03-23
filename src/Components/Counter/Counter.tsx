@@ -17,7 +17,7 @@ export const Counter: React.FC<CounterType> = (props) => {
         <div className={s.containerCounter}>
             <div>
                 <InputCounter
-                    counter={props.value}
+                    value={props.value}
                     status={props.status}
                     isMaxValue={props.isMaxValue}
                 />
